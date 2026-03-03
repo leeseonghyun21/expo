@@ -1,4 +1,11 @@
-import { Host, HorizontalFloatingToolbar, Icon, IconButton, Box } from '@expo/ui/jetpack-compose';
+import {
+  Host,
+  HorizontalFloatingToolbar,
+  Icon,
+  IconButton,
+  Box,
+  AnimatedVisibility,
+} from '@expo/ui/jetpack-compose';
 import { size } from '@expo/ui/jetpack-compose/modifiers';
 import { Children, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -20,10 +27,6 @@ export function RouterToolbarHost(props: RouterToolbarHostProps) {
 }
 
 export function RouterToolbarItem(props: RouterToolbarItemProps) {
-  if (props.hidden) {
-    return null;
-  }
-
   if (props.type === 'fluidSpacer') {
     // Silently ignore fluid spacer on android
     return null;
@@ -37,32 +40,37 @@ export function RouterToolbarItem(props: RouterToolbarItemProps) {
 
   if (props.type === 'searchBar') {
     if (process.env.NODE_ENV !== 'production') {
-      // prettier-ignore
-      console.warn('Stack.Toolbar.SearchBarSlot is not supported on Android. The search bar will not render.');
+      console.warn(
+        'Stack.Toolbar.SearchBarSlot is not supported on Android. The search bar will not render.'
+      );
     }
     return null;
   }
 
   if (hasChildren(props.children)) {
     if (process.env.NODE_ENV !== 'production') {
-      // prettier-ignore
-      console.warn('Stack.Toolbar.View is not supported on Android. Custom views inside the toolbar will not render.');
+      console.warn(
+        'Stack.Toolbar.View is not supported on Android. Custom views inside the toolbar will not render.'
+      );
     }
     return null;
   }
 
   if (!props.source) {
-    if (process.env.NODE_ENV !== 'production') {
-      // prettier-ignore
-      console.warn('Stack.Toolbar.Button on Android requires an ImageSourcePropType icon. SF Symbols and xcasset icons are not supported. Use the `icon` prop with a require() or { uri } source, or use <Stack.Toolbar.Icon src={...} />.');
+    if (process.env.NODE_ENV !== 'production' && !props.mdIconName) {
+      console.warn(
+        'Stack.Toolbar.Button on Android requires an ImageSourcePropType icon. SF Symbols and xcasset icons are not supported. Use the `icon` prop with a require() or { uri } source, or use <Stack.Toolbar.Icon src={...} />.'
+      );
     }
     return null;
   }
 
   return (
-    <IconButton onPress={props.onSelected} disabled={props.disabled}>
-      <Icon source={props.source} tintColor={props.tintColor} size={24} />
-    </IconButton>
+    <AnimatedVisibility visible={!props.hidden}>
+      <IconButton onPress={props.onSelected} disabled={props.disabled}>
+        <Icon source={props.source} tintColor={props.tintColor} size={24} />
+      </IconButton>
+    </AnimatedVisibility>
   );
 }
 

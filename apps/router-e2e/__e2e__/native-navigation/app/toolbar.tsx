@@ -296,6 +296,7 @@ export default function ToolbarScreen() {
         <Stack.Toolbar.Button
           hidden={!showSearchButton}
           icon="magnifyingglass"
+          md="search"
           tintColor={Color.ios.systemBlue}
           onPress={handleSearch}
           separateBackground={!sharesBackgroundSearchButton}
@@ -333,6 +334,7 @@ export default function ToolbarScreen() {
           <Stack.Toolbar.Button
             hidden={!showMicButton}
             icon="mic"
+            md="mic"
             tintColor={Color.ios.systemGreen}
             onPress={handleMic}
           />
@@ -341,6 +343,7 @@ export default function ToolbarScreen() {
         {isSearchFocused && (
           <Stack.Toolbar.Button
             icon="xmark.circle.fill"
+            md="close"
             tintColor={Color.ios.systemRed}
             onPress={handleClearSearch}
           />
@@ -524,16 +527,16 @@ export default function ToolbarScreen() {
             <Stack.Toolbar.Button
               icon={require('../../../assets/expo-transparent.png')}
               onPress={() => Alert.alert('Android', 'Expo transparent icon pressed')}
+              tintColor={Platform.select({
+                android: Color.android.dynamic.primary,
+                ios: Color.ios.systemBlue,
+              })}
             />
             <Stack.Toolbar.Spacer width={20} />
             <Stack.Toolbar.Button
               icon={require('../../../assets/expo-logo.png')}
-              tintColor="#4630EB"
               onPress={() => Alert.alert('Android', 'Expo logo pressed')}
             />
-            <Stack.Toolbar.Button onPress={() => Alert.alert('Android', 'Explore icon pressed')}>
-              <Stack.Toolbar.Icon src={require('../../../assets/explore_gray.png')} />
-            </Stack.Toolbar.Button>
           </>
         )}
       </Stack.Toolbar>
